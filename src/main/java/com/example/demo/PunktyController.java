@@ -13,7 +13,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/punkty")
 public class PunktyController {
-   private StudentService service= new StudentService();
+    public PunktyController(StudentService service) {
+        this.service = service;
+    }
+
+    private final StudentService service;
+
     @RequestMapping(value = "/students", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Student> GetUsers() {
