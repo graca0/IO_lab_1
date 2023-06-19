@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import com.example.demo.db.ScoreRepository;
 
 
 import static org.junit.Assert.*;
@@ -20,26 +21,26 @@ public class StudentServiceTest {
     @Test
     public void GetEmptyList()
     {
-        final StudentService service=new StudentService(repository);
+        final StudentService service = new StudentService(repository, scoreRepository);
         List<Student> testList= service.getStudents();
         assertTrue(testList.isEmpty());
     }
     @Test
     public void AddStudentTest(){
-        final StudentService service=new StudentService(repository);
+        final StudentService service = new StudentService(repository, scoreRepository);
         final Student created = service.addStudents(new NewStudent("PierwszyStudent","1-2-3","Pierwsza"));
         assertNotNull(created);
     }
     @Test
     public void AddStudentIsReturned(){
-        final StudentService service=new StudentService(repository);
+        final StudentService service = new StudentService(repository, scoreRepository);
         final Student created = service.addStudents(new NewStudent("PierwszyStudent","1-2-3","Pierwsza"));
         final List<Student> all = service.getStudents();
         assertEquals(created.Name,all.head().Name);
     }
     @Test
     public void AddStudentHasNewId(){
-        final StudentService service=new StudentService(repository);
+        final StudentService service = new StudentService(repository, scoreRepository);
         final Student created = service.addStudents(new NewStudent("PierwszyStudent","1-2-3","Pierwsza"));
         final Student created2 = service.addStudents(new NewStudent("DrugiStudent","1-2-3","Pierwsza"));
         assertEquals(2,service.getStudents().size());
@@ -47,4 +48,6 @@ public class StudentServiceTest {
     }
     @After
     public void cleanAfterTest() { this.repository.deleteAll(); }
+    @Autowired
+    private ScoreRepository scoreRepository;
 }

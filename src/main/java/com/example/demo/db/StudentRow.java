@@ -1,9 +1,9 @@
 package com.example.demo.db;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.example.demo.Student;
+
+import javax.persistence.*;
+import java.util.Set;
 @Entity
 public class StudentRow {
     @Id
@@ -12,7 +12,8 @@ public class StudentRow {
     private String name;
     private String number;
     private String group;
-
+    @OneToMany(mappedBy = "student")
+    private Set<ScoreRow> scores;
     protected StudentRow(){} public StudentRow(String name, String number, String group1) {
         this.name = name;
         this.number = number;
@@ -48,5 +49,16 @@ public class StudentRow {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+    public Student toStudent() {
+        return new Student(
+                this.getId(),
+                this.getName(),
+                this.getNumber(),
+                this.getGroup());
+    }
+
+    public Set<ScoreRow> getScores() {
+        return scores;
     }
 }
